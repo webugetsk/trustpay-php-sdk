@@ -34,6 +34,9 @@ trait RequestAwareTrait
     /** @var string */
     protected $customerEmail;
 
+    /** @var BillingAddress */
+    protected ?BillingAddress $billingAddress = null;
+
     /** @var string */
     protected $returnUrl;
 
@@ -131,6 +134,14 @@ trait RequestAwareTrait
     }
 
     /**
+     * @param string $billingAddress
+     */
+    public function setBillingAddress(BillingAddress $billingAddress)
+    {
+        $this->billingAddress = $billingAddress;
+    }
+
+    /**
      * @param string $returnUrl
      */
     public function setReturnUrl($returnUrl)
@@ -191,6 +202,16 @@ trait RequestAwareTrait
             'DSC'  => $this->description,
             'EMA'  => $this->customerEmail,
         ];
+
+        if ($this->billingAddress) {
+            $queryData = array_merge($queryData, [
+                'CardHolder' => $this->billingAddress->getCardHolder(),
+                'BillingStreet' => $this->billingAddress->getBillingStreet(),
+                'BillingPostcode' => $this->billingAddress->getBillingPostcode(),
+                'BillingCity' => $this->billingAddress->getBillingCity(),
+                'BillingCountry' => $this->billingAddress->getBillingCountry(),
+            ]);
+        }
 
         $queryData = array_filter($queryData, function ($value) {
             return $value !== null;

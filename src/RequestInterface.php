@@ -40,6 +40,11 @@ interface RequestInterface
     public function setCustomerEmail($customerEmail);
 
     /**
+     * @param string $billingAddress
+     */
+    public function setBillingAddress(BillingAddress $billingAddress);
+
+    /**
      * @param string $returnUrl
      */
     public function setReturnUrl($returnUrl);

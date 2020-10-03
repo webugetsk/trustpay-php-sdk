@@ -60,9 +60,9 @@ class TrustPay
      *
      * @return Payment\Request
      */
-    public function payment($amount, $reference, $email = null, $description = null, $currency = null)
+    public function payment($amount, $reference, $email = null, $billingAddress = null, $description = null, $currency = null)
     {
-        return $this->createPaymentRequest($amount, $reference, $email, $description, $currency);
+        return $this->createPaymentRequest($amount, $reference, $email, $billingAddress, $description, $currency);
     }
 
 
@@ -71,19 +71,20 @@ class TrustPay
      *
      * @param      $amount
      * @param      $reference
-     * @param null $email
+     * @param $email
+     * @param BillingAddress $billingAddress
      * @param null $description
      * @param null $currency
      *
      * @return Payment\Request
      */
-    public function paymentWithCard($amount, $reference, $email = null, $description = null, $currency = null)
+    public function paymentWithCard($amount, $reference, $email, BillingAddress $billingAddress, $description = null, $currency = null)
     {
         $this->assertConfiguration();
 
         $this->configuration->setPaymentType(Configuration::PAYMENT_TYPE_CARD);
 
-        return $this->createPaymentRequest($amount, $reference, $email, $description, $currency);
+        return $this->createPaymentRequest($amount, $reference, $email, $billingAddress, $description, $currency);
     }
 
 
@@ -104,7 +105,7 @@ class TrustPay
 
         $this->configuration->setPaymentType(Configuration::PAYMENT_TYPE_BANK);
 
-        return $this->createPaymentRequest($amount, $reference, $email, $description, $currency);
+        return $this->createPaymentRequest($amount, $reference, $email, null, $description, $currency);
     }
 
     /**
@@ -121,7 +122,8 @@ class TrustPay
     public function paymentWithCardStoring(
         $amount,
         $reference,
-        $email = null,
+        $email,
+        BillingAddress $billingAddress,
         $description = null,
         $currency = null
     ) {
@@ -129,7 +131,7 @@ class TrustPay
 
         $this->configuration->setPaymentType(Configuration::PAYMENT_TYPE_CARD);
 
-        $request = $this->createPaymentRequest($amount, $reference, $email, $description, $currency);
+        $request = $this->createPaymentRequest($amount, $reference, $email, $billingAddress, $description, $currency);
         $request->setAuthorizedStoreCard(true);
 
         return $request;
@@ -150,7 +152,8 @@ class TrustPay
         $cardToken,
         $amount,
         $reference,
-        $email = null,
+        $email,
+        BillingAddress $billingAddress,
         $description = null,
         $currency = null
     ) {
@@ -164,6 +167,7 @@ class TrustPay
             $amount,
             $reference,
             $email,
+            $billingAddress,
             $description,
             $currency
         );
@@ -239,7 +243,7 @@ class TrustPay
      * @return Payment\Request
      * @throws InvalidInputArguments
      */
-    protected function createPaymentRequest($amount, $reference, $email, $description, $currency)
+    protected function createPaymentRequest($amount, $reference, $email, BillingAddress $billingAddress = null, $description, $currency)
     {
         $this->assertConfiguration();
 
@@ -248,6 +252,7 @@ class TrustPay
             $amount,
             $reference,
             $email,
+            $billingAddress,
             $description,
             $currency
         );

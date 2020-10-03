@@ -23,16 +23,17 @@ class RequestFactory
         $amount,
         $reference,
         $email = null,
+        BillingAddress $billingAddress = null,
         $description = null,
         $currency = null
     ) {
-
         return $this->createByClass(
             Payment\Request::class,
             $configuration,
             $amount,
             $reference,
             $email,
+            $billingAddress,
             $description,
             $currency
         );
@@ -110,6 +111,7 @@ class RequestFactory
         $amount,
         $reference,
         $email = null,
+        BillingAddress $billingAddress = null,
         $description = null,
         $currency = null
     ) {
@@ -119,7 +121,7 @@ class RequestFactory
             $configuration->getEndpoint()
         );
 
-        $this->injectRequestAttributes($request, $configuration, $amount, $reference, $email, $description, $currency);
+        $this->injectRequestAttributes($request, $configuration, $amount, $reference, $email, $billingAddress, $description, $currency);
 
         return $request;
     }
@@ -141,6 +143,7 @@ class RequestFactory
         $amount,
         $reference,
         $email,
+        BillingAddress $billingAddress = null,
         $description,
         $currency
     ) {
@@ -148,6 +151,10 @@ class RequestFactory
         $request->setReference($reference);
         $request->setCustomerEmail($email);
         $request->setDescription($description);
+        
+        if ($billingAddress) {
+            $request->setBillingAddress($billingAddress);
+        }
 
         $request->setCurrency($currency ?: $configuration->getCurrency());
         $request->setLanguage($configuration->getLanguage());
