@@ -68,4 +68,7 @@ interface RequestInterface
      * @param string $notificationUrl
      */
     public function setNotificationUrl($notificationUrl);
+
+    /** @param int $paymentType */
+    public function setPaymentType($paymentType);
 }

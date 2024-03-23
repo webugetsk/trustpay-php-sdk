@@ -27,8 +27,9 @@ class SignatureValidator implements SignatureValidatorInterface
         $args = func_get_args();
         $message = '';
         foreach ($args as $arg) {
-            $message .= $arg;
+            $message .= '/'.$arg;
         }
+        $message = substr($message, 1);
 
         return $message;
     }

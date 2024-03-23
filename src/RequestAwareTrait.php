@@ -53,6 +53,11 @@ trait RequestAwareTrait
     protected $notificationUrl;
 
     /**
+     * @var int
+     */
+    protected $paymentType;
+
+    /**
      * @param SignatureValidatorInterface $signatureValidator
      */
     public function setSignatureValidator(SignatureValidatorInterface $signatureValidator)
@@ -182,25 +187,36 @@ trait RequestAwareTrait
     }
 
     /**
+     * @param string $paymentType
+     */
+    public function setPaymentType($paymentType)
+    {
+        $this->paymentType = $paymentType;
+    }
+
+    /**
      * @return array
      */
     public function getDefaultQueryData()
     {
         $queryData = [
-            'AID'  => $this->accountId,
-            'AMT'  => $this->amount,
-            'CUR'  => $this->currency,
-            'REF'  => $this->reference,
-            'URL'  => $this->returnUrl,
-            'RURL' => $this->successUrl,
-            'CURL' => $this->cancelUrl,
-            'EURL' => $this->errorUrl,
-            'NURL' => $this->notificationUrl,
-            'SIG'  => $this->createStandardSignature(),
-            'LNG'  => $this->language,
-            'CNT'  => $this->country,
-            'DSC'  => $this->description,
-            'EMA'  => $this->customerEmail,
+            'AccountId'  => $this->accountId,
+            'Amount'  => $this->amount,
+            'Currency'  => $this->currency,
+            'Reference'  => $this->reference,
+            'Url'  => $this->returnUrl,
+            'ReturnUrl' => $this->successUrl,
+            'CancelUrl' => $this->cancelUrl,
+            'ErrorUrl' => $this->errorUrl,
+            'NotificationUrl' => $this->notificationUrl,
+            'Signature'  => $this->createStandardSignature(),
+            'Localization'  => $this->language,
+            'Country'  => $this->billingAddress->getBillingCountry(),
+            'Description'  => $this->description,
+            'Email'  => $this->customerEmail,
+            //
+            'PaymentType' => $this->paymentType,
+
         ];
 
         if ($this->billingAddress) {
@@ -226,7 +242,7 @@ trait RequestAwareTrait
      */
     public function getUrl()
     {
-        foreach ([ 'amount', 'reference', 'currency' ] as $required) {
+        foreach ([ 'amount', 'reference', 'currency', 'paymentType' ] as $required) {
             if ($this->$required === null) {
                 throw new Exceptions\RequestMissingRequiredField("The {$required} field is required.");
             }
@@ -263,7 +279,14 @@ trait RequestAwareTrait
             $this->accountId,
             $this->amount,
             $this->currency,
-            $this->reference
+            $this->reference,
+            $this->paymentType,
+            $this->billingAddress->getBillingCity(),
+            $this->billingAddress->getBillingCountry(),
+            $this->billingAddress->getBillingPostcode(),
+            $this->billingAddress->getBillingStreet(),
+            $this->billingAddress->getCardHolder(),
+            $this->customerEmail,
         );
 
         return $this->signatureValidator->computeSignature($message);

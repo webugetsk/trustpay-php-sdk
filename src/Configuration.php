@@ -7,7 +7,7 @@ use TrustPay\Exceptions\InvalidInputArguments;
 class Configuration
 {
     const PAYMENT_TYPE_BANK = 1;
-    const PAYMENT_TYPE_CARD = 2;
+    const PAYMENT_TYPE_CARD = 0;
     const PAYMENT_TYPE_CARD_EXTENSION = 3;
 
     const DEFAULT_PAYMENT_TYPE = self::PAYMENT_TYPE_BANK;
@@ -20,13 +20,13 @@ class Configuration
     ];
 
     /** @var string */
-    private $cardPaymentsEndpoint = 'https://ib.trustpay.eu/mapi5/Card/Pay';
+    private $cardPaymentsEndpoint = 'https://amapi.trustpay.eu/mapi5/Card/PayPopup';
 
     /** @var string */
-    private $bankPaymentsEndpoint = 'https://ib.trustpay.eu/mapi/pay.aspx';
+    private $bankPaymentsEndpoint = 'https://amapi.trustpay.eu/mapi/pay.aspx';
 
     /** @var string */
-    private $cardPaymentsExtensionEndpoint = 'https://ib.trustpay.eu/mapi/cardpaymentshandler.aspx';
+    private $cardPaymentsExtensionEndpoint = 'https://amapi.trustpay.eu/mapi/cardpaymentshandler.aspx';
 
     /** @var int */
     private $paymentType = self::DEFAULT_PAYMENT_TYPE;
@@ -67,6 +67,10 @@ class Configuration
         }
 
         $this->paymentType = $paymentType;
+    }
+
+    public function getPaymentType() {
+        return $this->paymentType;
     }
 
     /**

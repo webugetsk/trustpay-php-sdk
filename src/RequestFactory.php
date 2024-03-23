@@ -162,5 +162,6 @@ class RequestFactory
         $request->setSuccessUrl($configuration->getSuccessUrl());
         $request->setNotificationUrl($configuration->getNotificationUrl());
         $request->setErrorUrl($configuration->getErrorUrl());
+        $request->setPaymentType($configuration->getPaymentType());
     }
 }
