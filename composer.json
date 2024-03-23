@@ -1,5 +1,5 @@
 {
-  "name": "res0/trustpay-php-sdk",
+  "name": "webugetsk/trustpay-php-sdk",
   "description": "Easy unofficial trustpay PHP SDK",
   "minimum-stability": "stable",
   "license": "proprietary",
@@ -7,6 +7,10 @@
     {
       "name": "Juraj Šurman",
       "email": "juraj@surman.sk"
+    },
+    {
+      "name": "Alim Imanbakiev",
+      "email": "info@webuget.sk"
     }
   ],
   "autoload": {
