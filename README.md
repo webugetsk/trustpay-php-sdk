@@ -6,8 +6,11 @@ Technical documentation - https://www.trustpay.eu/documents/technical/
 ## Install
 
 ```bash
-composer require surikman/trustpay-php-sdk
+composer require webugetsk/trustpay-php-sdk
 ```
+
+## Remarks
+This is stll Work in Progress. The original documentation below might not match.
 
 ## Usage
 
